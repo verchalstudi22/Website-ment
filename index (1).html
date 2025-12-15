@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Secret sphere story web v4 new</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: "Inter", sans-serif;
+                background: url("https://files.catbox.moe/9gxzk2.jpg") center
+                    top/cover no-repeat fixed;
+                color: #fff;
+                overflow-x: hidden;
+                opacity: 0;
+                transition: opacity 0.6s ease;
+            }
+            .overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.45);
+                z-index: -1;
+            }
+            .header-box {
+                width: 100%;
+                padding: 26px 0 10px 0;
+                text-align: center;
+            }
+            .header-title {
+                font-size: 34px;
+                font-weight: 700;
+                color: #c996ff;
+            }
+            .header-sub {
+                margin-top: 4px;
+                font-size: 15px;
+                opacity: 0.85;
+            }
+            .container {
+                max-width: 780px;
+                margin: 40px auto;
+                padding: 26px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                animation: fadeIn 0.8s ease;
+                box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+            }
+            h1 {
+                text-align: center;
+                font-size: 30px;
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+            p.desc {
+                text-align: center;
+                font-size: 15px;
+                opacity: 0.9;
+                line-height: 1.6;
+                margin-bottom: 20px;
+            }
+            .label {
+                font-size: 14px;
+                opacity: 0.9;
+                margin-bottom: 6px;
+                margin-top: 14px;
+                display: block;
+                font-weight: 500;
+            }
+            .input-box {
+                width: 100%;
+                padding: 14px;
+                margin-bottom: 6px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.28);
+                border-radius: 12px;
+                color: #fff;
+                font-size: 15px;
+                outline: none;
+            }
+            textarea.input-box {
+                height: 140px;
+                resize: none;
+            }
+            .btn {
+                width: 100%;
+                padding: 14px;
+                margin-top: 12px;
+                font-size: 16px;
+                font-weight: 600;
+                background: rgba(255, 255, 255, 0.16);
+                border: 1px solid rgba(255, 255, 255, 0.35);
+                color: white;
+                border-radius: 14px;
+                cursor: pointer;
+                transition: 0.25s;
+            }
+            .btn:hover {
+                background: rgba(255, 255, 255, 0.26);
+            }
+            .link-box {
+                margin-top: 15px;
+                background: rgba(255, 255, 255, 0.25);
+                padding: 10px;
+                border-radius: 12px;
+                color: white;
+                text-align: center;
+                font-weight: 500;
+                word-break: break-word;
+            }
+            .digital-card {
+                max-width: 640px;
+                margin: 40px auto;
+                padding: 28px;
+                border-radius: 22px;
+                background: rgba(0, 0, 0, 0.45);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                box-shadow: 0 20px 32px rgba(0, 0, 0, 0.25);
+                text-align: center;
+            }
+            .card-msg {
+                font-size: 17px;
+                line-height: 1.7;
+                white-space: pre-line;
+                margin-top: 20px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                padding: 20px;
+                border-radius: 16px;
+            }
+            .card-meta {
+                margin-top: 12px;
+                font-size: 14px;
+                opacity: 0.85;
+                line-height: 1.5;
+            }
+            #loading {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.55);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 99999;
+            }
+            .loading-card {
+                padding: 28px 36px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 18px;
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                text-align: center;
+            }
+            .dots {
+                display: flex;
+                gap: 8px;
+                margin-top: 10px;
+                justify-content: center;
+            }
+            .dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: white;
+                animation: bounce 0.6s infinite alternate;
+            }
+            .dot:nth-child(2) {
+                animation-delay: 0.15s;
+            }
+            .dot:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+            @keyframes bounce {
+                from {
+                    transform: translateY(3px);
+                    opacity: 0.6;
+                }
+                to {
+                    transform: translateY(-5px);
+                    opacity: 1;
+                }
+            }
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            .floating-music-btn {
+                position: fixed;
+                bottom: 22px;
+                right: 22px;
+                padding: 12px 20px;
+                background: rgba(255, 255, 255, 0.22);
+                color: #fff;
+                border-radius: 14px;
+                display: none;
+                cursor: pointer;
+                border: 1px solid rgba(255, 255, 255, 0.35);
+            }
+
+/* FOOTER KONTEN TANPA GLASSMORPHISM */  
+        footer {  
+            margin-top: 60px;  
+            padding: 20px;  
+            text-align: center;  
+            font-size: 14px;  
+            background: rgba(255, 255, 255, 0.12);  
+            border-top: 1px solid rgba(255, 255, 255, 0.25);  
+            border-radius: 16px;  
+        }  
+
+        .contact-row {  
+            display: flex;  
+            flex-direction: column;  
+            gap: 16px;  
+            width: 100%;  
+            max-width: 360px;  
+            margin: 0 auto;  
+        }  
+
+        .contact-item {  
+            display: flex;  
+            align-items: center;  
+            gap: 14px;  
+            background: rgba(0, 0, 0, 0.35);  
+            padding: 12px 16px;  
+            border-radius: 14px;  
+            border: 1px solid rgba(255, 255, 255, 0.18);  
+            transition: 0.2s;  
+        }  
+
+        .contact-item:hover {  
+            background: rgba(0, 0, 0, 0.5);  
+            scale: 1.02;  
+        }  
+
+        .contact-item img {  
+            width: 40px;  
+            height: 40px;  
+            border-radius: 10px;  
+            object-fit: cover;  
+        }  
+
+        .contact-item span {  
+            font-size: 15px;  
+            font-weight: 500;  
+        }  
+
+        .copyright {  
+            opacity: 0.8;  
+            margin-top: 18px;  
+        }  
+    </style>  
+
+        <!-- LOADING -->
+        <div id="loading">
+            <div class="loading-card">
+                <div style="font-size: 15px; opacity: 0.8">
+                    Membuka halaman…
+                </div>
+                <div class="dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay"></div>
+
+        <!-- NORMAL VIEW -->
+        <div id="normalView">
+            <div class="header-box">
+                <div class="header-title">Secret sphere story web</div>
+                <div class="header-sub">
+                    Anonymous Confession & Link generator digital card
+                </div>
+            </div>
+
+            <div class="container">
+                <h1>Platform Message Information</h1>
+                <p class="desc">
+                    Selamat datang di Secret Sphere Story Web khusus yang kami
+                    hadirkan / meriliskan sebagai ruang untuk menyampaikan pesan
+                    dengan cara yang lebih anggun, rapi, dan penuh kesan.
+                    Melalui platform digital card ini, setiap kata yang Anda
+                    tuliskan akan diubah menjadi sebuah kartu digital yang
+                    estetik — dilengkapi dengan tampilan efek visual yang
+                    menenangkan dan dukungan musik dari tautan / url MP3 Catbox
+                    untuk memperkuat suasana pesan kamu. Kami juga memahami
+                    bahwa tidak semua perasaan mudah disampaikan secara
+                    langsung. Karena itu, platform halaman digital card ini
+                    dirancang sebagai tempat yang aman bagi siapa pun yang ingin
+                    mengungkapkan sesuatu yang penting, namun sulit diucapkan
+                    secara lisan. Di sini juga, Anda dapat mengekspresikan isi
+                    hati secara sopan, privat, dan tetap penuh ketulusan. Semoga
+                    platform ini menjadi jembatan yang membantu Anda
+                    menyampaikan pesan dengan lebih indah, lebih bermakna, dan
+                    lebih dekat dengan apa yang sebenarnya ingin Anda sampaikan,
+                    terimakasih.
+                </p>
+
+                <label class="label">Nama Pengirim</label>
+                <input
+                    id="sender"
+                    class="input-box"
+                    placeholder="Anonymous / nama kamu sendiri..."
+                />
+
+                <label class="label">Nama Penerima</label>
+                <input
+                    id="nama"
+                    class="input-box"
+                    placeholder="contoh : reva"
+                />
+
+                <label class="label">Judul Musik</label>
+                <input
+                    id="title"
+                    class="input-box"
+                    placeholder="Contoh: Rumah Ke Rumah — Hindia"
+                />
+
+                <label class="label">Link Musik (Catbox MP3)</label>
+                <input
+                    id="music"
+                    class="input-box"
+                    placeholder=" Tempel link MP3 Catbox"
+                />
+
+                <label class="label">Isi Pesan</label>
+                <textarea
+                    id="pesan"
+                    class="input-box"
+                    placeholder="Tulis pesan kamu..."
+                ></textarea>
+
+                <button class="btn" onclick="generateLink()">
+                    Buat Link Kartu Digital
+                </button>
+                <div id="hasil"></div>
+            </div>
+
+            <!-- ====== FOOTER (REVISI) ====== -->
+            <footer>
+                <h3 style="color: #c996ff; margin-bottom: 10px">
+                    Contact & Support Services
+                </h3>
+
+                <div class="contact-row">
+                    <!-- EMAIL 1 (GMAIL BISNIS) -->
+                    <a
+                        class="contact-item"
+                        href="mailto:verchalstudio272@gmail.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src="https://files.catbox.moe/nmoz3u.jpg"
+                            alt="Email 1"
+                        />
+                        <span>Gmail bisnis</span>
+                    </a>
+
+                    <!-- EMAIL 2 (GMAIL CS) -->
+                    <a
+                        class="contact-item"
+                        href="mailto:verchalstudio.helpdesk02@gmail.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src="https://files.catbox.moe/nmoz3u.jpg"
+                            alt="Email 2"
+                        />
+                        <span>Gmail customer service</span>
+                    </a>
+
+                    <!-- INSTAGRAM -->
+                    <a
+                        class="contact-item"
+                        href="https://instagram.com/verchalstudioxdious"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src="https://files.catbox.moe/23lymm.jpg"
+                            alt="Instagram"
+                        />
+                        <span>Instagram</span>
+                    </a>
+
+                    <!-- TELEGRAM (PERBAIKAN: HILANGIN @) -->
+                    <a
+                        class="contact-item"
+                        href="https://t.me/@verchalstudioxdious"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src="https://files.catbox.moe/1tydev.jpg"
+                            alt="Telegram"
+                        />
+                        <span>Telegram</span>
+                    </a>
+
+                    <!-- WHATSAPP / CUSTOMER SERVICE 24/7 -->
+                    <a
+                        class="contact-item"
+                        href="https://wa.me/6285117374133"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src="https://files.catbox.moe/gmbi69.jpg"
+                            alt="Customer Service"
+                        />
+                        <span>Customer service website via whatsapp</span>
+                    </a>
+
+                    <!-- DEVELOPER -->
+                    <a
+                        class="contact-item"
+                        href="https://wa.me/62881023484962"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <img
+                            src="https://files.catbox.moe/71kyiq.jpg"
+                            alt="Developer"
+                        />
+                        <span>Contact Pengembang / Developer</span>
+                    </a>
+                </div>
+
+                  <footer class="footer">
+<footer>
+  <p>© 2025 Secretspherestoryweb Digital Card — Verchal Studio × Dious Garx</p>
+  <p>
+    Powered by Catbox Storage • Local Storage (Chrome Dev) • Edited with Acode • All Rights Reserved
+  </p>
+
+        <!-- VIEW KARTU -->
+        <div id="cardView" style="display: none">
+            <div class="digital-card">
+                <h1 style="font-size: 26px">💌 Kartu Digital</h1>
+                <div id="cardMeta" class="card-meta"></div>
+                <div id="cardMsg" class="card-msg"></div>
+                <div id="cardMusic"></div>
+                <button class="btn" onclick="shareCard()">Bagikan Kartu</button>
+            </div>
+        </div>
+
+        <button id="floatingBtn" class="floating-music-btn"></button>
+        <audio id="audioPlayer" loop></audio>
+
+        <script>
+            window.addEventListener("load", () => {
+                setTimeout(() => {
+                    document.getElementById("loading").style.animation =
+                        "fadeOut .6s forwards";
+                    setTimeout(() => {
+                        document.getElementById("loading").style.display =
+                            "none";
+                        document.body.style.opacity = 1;
+                    }, 600);
+                }, 800);
+            });
+
+            function encodeSafe(text) {
+                return btoa(encodeURIComponent(text));
+            }
+            function decodeSafe(text) {
+                try {
+                    return decodeURIComponent(atob(text));
+                } catch {
+                    return "";
+                }
+            }
+
+            function generateLink() {
+                const sender = encodeSafe(
+                    document.getElementById("sender").value
+                );
+                const nama = encodeSafe(document.getElementById("nama").value);
+                const pesan = encodeSafe(
+                    document.getElementById("pesan").value
+                );
+                const music = encodeSafe(
+                    document.getElementById("music").value
+                );
+                const title = encodeSafe(
+                    document.getElementById("title").value
+                );
+                if (!document.getElementById("pesan").value)
+                    return alert("Pesan masih kosong.");
+                const base = window.location.origin + window.location.pathname;
+                const link = `${base}?from=${sender}&to=${nama}&msg=${pesan}&music=${music}&title=${title}`;
+                navigator.clipboard.writeText(link);
+                document.getElementById(
+                    "hasil"
+                ).innerHTML = `<div class='link-box'>${link}</div><p style='margin-top:6px;text-align:center;'>✔ Link tersalin otomatis</p>`;
+            }
+
+            const p = new URLSearchParams(window.location.search);
+            if (p.has("msg")) {
+                document.getElementById("normalView").style.display = "none";
+                document.getElementById("cardView").style.display = "block";
+                const sender = decodeSafe(p.get("from"));
+                const to = decodeSafe(p.get("to"));
+                const msg = decodeSafe(p.get("msg"));
+                const music = decodeSafe(p.get("music"));
+                const title = decodeSafe(p.get("title"));
+                document.getElementById("cardMeta").innerHTML = `${
+                    sender ? "Dari: <b>" + sender + "</b><br>" : ""
+                }${to ? "Untuk: <b>" + to + "</b>" : ""}`;
+                document.getElementById("cardMsg").innerText = msg;
+                if (music) {
+                    document.getElementById("audioPlayer").src = music;
+                    document.getElementById(
+                        "cardMusic"
+                    ).innerHTML = `<p style='margin-top:20px;opacity:.85;'>🎵 ${
+                        title || "Lagu Pilihan"
+                    }</p>`;
+                    document.getElementById("floatingBtn").style.display =
+                        "block";
+                    document.getElementById("floatingBtn").innerText =
+                        "▶ Putar Musik";
+                }
+            }
+
+            let audio = document.getElementById("audioPlayer");
+            let isPlaying = false;
+            document.getElementById("floatingBtn").onclick = () => {
+                if (!isPlaying) {
+                    audio.play();
+                    isPlaying = true;
+                    document.getElementById("floatingBtn").innerText =
+                        "⏸ Hentikan Musik";
+                } else {
+                    audio.pause();
+                    isPlaying = false;
+                    document.getElementById("floatingBtn").innerText =
+                        "▶ Putar Musik";
+                }
+            };
+
+            function shareCard() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: "Digital Card",
+                        text: "Aku punya kartu buat kamu…",
+                        url: window.location.href
+                    });
+                } else {
+                    alert("Browser ini belum mendukung Web Share API.");
+                }
+            }
+        </script>
+    <body>
+<html>
